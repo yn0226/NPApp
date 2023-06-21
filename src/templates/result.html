@@ -1,0 +1,10 @@
+<title>Animal Predict App</title>
+{% if Res_NP %}
+    <h1>総合判定： {{ Res_NP }} </h1>
+        <h2>ポジティブ: {{ Res_P }}</h2>
+        <h2>ネガティブ: {{ Res_N }}</h2>
+        <h2>中立: {{ Res_Neu }}</h2>
+    <a href="./">トップへ戻る</a>
+{% else %}
+    <a href="./">トップへ戻る</a>
+{% endif %}

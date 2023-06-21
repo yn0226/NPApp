@@ -1,0 +1,24 @@
+<title>NegaPosi App</title>
+<style>
+    #Wrapper{
+        text-align: center;
+    }
+</style>
+
+<h1>
+    レビューをネガポジ判定！
+</h1>
+
+<div id="wrapper">
+    <h1>URLを入力してください</h1>
+    <form method="post">
+        {{forms.csrf_token}}
+
+        {{ forms.InputFormTest.label }}<br>
+        {{forms.InputFormTest}}<br>
+        <br>
+
+        {{forms.submit}}
+    </form>
+</div>
+
