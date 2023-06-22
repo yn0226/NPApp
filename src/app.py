@@ -106,9 +106,11 @@ from wtforms import Form, StringField, validators, SubmitField
 #------------------
 # 学習済みモデルをもとに推論を行う
 def predict(pred_tensor):
+    print('推論:def predict1')
     #device
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-    
+    print('推論:def predict2')
+
     # ネットワークの準備
     net = Net().cpu().eval()
     # 学習済みモデルの重み（NPmodel.pt）を読み込み
