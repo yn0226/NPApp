@@ -7,8 +7,8 @@
 #↑がだめで、↓でインストールしてmecab使える
 #python -m unidic download
 #-----------------------------
-import sys
-sys.path.append('C:/Users/2nb23/anaconda3/Lib/site-packages')
+#import sys
+#sys.path.append('C:/Users/2nb23/anaconda3/Lib/site-packages')
 #path_list = sys.path
 #print(path_list)
 
