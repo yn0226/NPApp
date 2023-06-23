@@ -115,7 +115,7 @@ def predict(pred_tensor):
     net = Net().cpu().eval()
     print('推論:def predict3')
     # 学習済みモデルの重み（NPmodel.pt）を読み込み
-    net.load_state_dict(torch.load('./src/NPmodel.pt', map_location=torch.device('cpu')))
+    net.load_state_dict(torch.load('../src/NPmodel.pt', map_location=torch.device('cpu'))) #ここ！！パス？
     print('推論:def predict4')
     # 推論
     with torch.no_grad():
