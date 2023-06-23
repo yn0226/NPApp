@@ -113,13 +113,14 @@ def predict(pred_tensor):
 
     # ネットワークの準備
     net = Net().cpu().eval()
+    print('推論:def predict3')
     # 学習済みモデルの重み（NPmodel.pt）を読み込み
     net.load_state_dict(torch.load('./src/NPmodel.pt', map_location=torch.device('cpu')))
-    print('推論:def predict3')
+    print('推論:def predict4')
     # 推論
     with torch.no_grad():
         y = net(pred_tensor.to(device).unsqueeze(0))
-        print('推論:def predict4')
+        print('推論:def predict5')
     # 推論ラベルを取得
     y = torch.argmax(y, dim=-1)
     print(y)
