@@ -1,24 +1,32 @@
-<title>NegaPosi App</title>
-<style>
-    #Wrapper{
-        text-align: center;
-    }
-</style>
+<!doctype html>
+<html lang="ja">
 
-<h1>
-    レビューをネガポジ判定！
-</h1>
+    <style>
+        #Wrapper{
+            text-align: center;
+        }
+    </style>
 
-<div id="wrapper">
-    <h1>URLを入力してください</h1>
-    <form method="post">
-        {{forms.csrf_token}}
+    <body>
+        <div style="text-align:center;">
+            <div style="display:inline-block;">
+                <h1>
+                    レビューをネガポジ判定！
+                </h1>
+            
+                <div id="wrapper">                    
+                    <form method="post">
+                        {{forms.csrf_token}}
 
-        {{ forms.InputFormTest.label }}<br>
-        {{forms.InputFormTest}}<br>
-        <br>
+                        {{ forms.InputFormTest.label }}<br>
+                        {{forms.InputFormTest}}<br>
+                        <br>
 
-        {{forms.submit}}
-    </form>
-</div>
+                        {{forms.submit}}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
 

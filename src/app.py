@@ -115,7 +115,9 @@ def predict(pred_tensor):
     net = Net().cpu().eval()
     print('推論:def predict3')
     # 学習済みモデルの重み（NPmodel.pt）を読み込み
-    net.load_state_dict(torch.load('../src/NPmodel.pt', map_location=torch.device('cpu'))) #ここ！！パス？
+    # net.load_state_dict(torch.load('../src/NPmodel.pt', map_location=torch.device('cpu'))) #ここ！！パス？
+    net.load_state_dict(torch.load('./src/NPmodel.pt', map_location=torch.device('cpu')))
+    
     print('推論:def predict4')
     # 推論
     with torch.no_grad():
@@ -184,7 +186,11 @@ class InputForm(Form):
     submit = SubmitField('送信')
 
 #URLにアクセスしたときの挙動
-@app.route('/', methods = ['GET', 'POST'])
+# @app.route('/')
+# def index():
+#     return render_template('index.html')
+
+@app.route('/', methods=['GET', 'POST'])
 def predicts():
     # WTFormsで構築したフォームをインスタンス化
     form = InputForm(request.form)
@@ -196,6 +202,7 @@ def predicts():
         # 条件に当てはまる場合
         if form.validate() == False:
             return render_template('index.html', forms=form)
+            #return render_template('index.html')
         
         # 条件に当てはまらない場合:推論を実行
         else:
@@ -224,6 +231,7 @@ def predicts():
             for review in df_Input['comment']:    
                 reviews.append(review)
                 #print('全レビュー数：', len(reviews))
+                
 
             corpus_In = []
             for review in reviews:  
@@ -253,7 +261,7 @@ def predicts():
             pred_tensor = pred_tensor[:, :133]  # 学習済みモデルの133次元にスライスする
             print('[2]pred_tensor:',len(pred_tensor))
 
-            # 入力された画像に対して推論
+            # 入力されたreviewに対して推論
             pred = predict(pred_tensor)
             print('[3]y:', pred)
             Res_NP_ = Judge(pred)
@@ -265,10 +273,11 @@ def predicts():
             print('[4]総合判定：',all_NP_value,'P:',cnt_P_value,'N:',cnt_N_value,'Neu:',cnt_Neu_value)            
             return render_template('result.html', Res_NP=all_NP_value, Res_P=cnt_P_value,Res_N=cnt_N_value,Res_Neu=cnt_Neu_value)
         return redirect(request.url)
+    
     # GET ---
     # URL から Web ページへのアクセスがあった時の挙動
     elif request.method == 'GET':
-        return render_template('index.html', forms=form)
+        return render_template('index.html',forms=form)
     
 #アプリ実行の定義
 if __name__ == '__main__':
