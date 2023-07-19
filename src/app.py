@@ -115,8 +115,10 @@ def predict(pred_tensor):
     net = Net().cpu().eval()
     print('推論:def predict3')
     # 学習済みモデルの重み（NPmodel.pt）を読み込み
-    # net.load_state_dict(torch.load('../src/NPmodel.pt', map_location=torch.device('cpu'))) #ここ！！パス？
-    net.load_state_dict(torch.load('../src/NPmodel.pt', map_location=torch.device('cpu')))
+    # ★ローカルは以下のパス
+    net.load_state_dict(torch.load('./src/NPmodel.pt', map_location=torch.device('cpu'))) #ここ！！パス？
+    # ★デプロイ時は以下のパス
+    # net.load_state_dict(torch.load('../src/NPmodel.pt', map_location=torch.device('cpu')))
     
     print('推論:def predict4')
     # 推論
@@ -143,15 +145,21 @@ def Judge(pred):
     print('y2:',len(y2))
     print(y2)
 
+    # ポジティブ・ネガティブ結果を入れるDF
+    y3 =[]
+
     # 全レビューの結果を確認しカウント
     for res in y2:
         #ラベルを取得し、カウント  
         if res == 0:
             cnt_P = cnt_P + 1
+            y3.append('P')
         elif res == 1:
             cnt_N = cnt_N + 1
+            y3.append('N')
         elif res == 2:
             cnt_Neu = cnt_Neu + 1
+            y3.append('Neu')
         
     # 総合結果
     all_NP = ''
@@ -170,7 +178,7 @@ def Judge(pred):
     #print('P：',cnt_P,'N：',cnt_N,'Neu：',cnt_Neu)        
     #print('総合判定：',all_NP)
 
-    return cnt_P, cnt_N, cnt_Neu, all_NP
+    return cnt_P, cnt_N, cnt_Neu, all_NP, y3
 
 
     
@@ -202,7 +210,7 @@ def predicts():
         # 条件に当てはまる場合
         if form.validate() == False:
             return render_template('index.html', forms=form)
-            #return render_template('index.html')
+            
         
         # 条件に当てはまらない場合:推論を実行
         else:
@@ -225,6 +233,8 @@ def predicts():
             #filename = '../価格com口コミ.csv'
             #df_Input =pd.read_csv(filename, encoding='shift-jis')
             df_Input = res_df
+            # dfに結果列を追加しておく（推論時に結果を格納）
+            df_Input['result'] = 0
 
             # CSVからレビュー部分を順に取り出し、reviewsに格納
             reviews = []    # review内容
@@ -232,7 +242,7 @@ def predicts():
                 reviews.append(review)
                 #print('全レビュー数：', len(reviews))
                 
-
+            # reviews からレビューを取り出し、形態素解析
             corpus_In = []
             for review in reviews:  
 
@@ -269,9 +279,15 @@ def predicts():
             cnt_P_value = Res_NP_[0]
             cnt_N_value = Res_NP_[1]
             cnt_Neu_value = Res_NP_[2]
-            all_NP_value = Res_NP_[3]            
+            all_NP_value = Res_NP_[3]   
+            y3_value = Res_NP_[4]
+            # dfに結果を追加
+            df_Input['result'] = y3_value            
+            #print(df_Input[:2])
+
+            # 判定結果を送る
             print('[4]総合判定：',all_NP_value,'P:',cnt_P_value,'N:',cnt_N_value,'Neu:',cnt_Neu_value)            
-            return render_template('result.html', Res_NP=all_NP_value, Res_P=cnt_P_value,Res_N=cnt_N_value,Res_Neu=cnt_Neu_value)
+            return render_template('result.html', Res_NP=all_NP_value, Res_P=cnt_P_value,Res_N=cnt_N_value,Res_Neu=cnt_Neu_value, table=(df_Input.to_html(classes="mystyle")))
         return redirect(request.url)
     
     # GET ---
