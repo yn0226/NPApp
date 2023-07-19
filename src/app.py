@@ -116,9 +116,9 @@ def predict(pred_tensor):
     print('推論:def predict3')
     # 学習済みモデルの重み（NPmodel.pt）を読み込み
     # ★ローカルは以下のパス
-    net.load_state_dict(torch.load('./src/NPmodel.pt', map_location=torch.device('cpu'))) #ここ！！パス？
+    #net.load_state_dict(torch.load('./src/NPmodel.pt', map_location=torch.device('cpu'))) #ここ！！パス？
     # ★デプロイ時は以下のパス
-    # net.load_state_dict(torch.load('../src/NPmodel.pt', map_location=torch.device('cpu')))
+    net.load_state_dict(torch.load('../src/NPmodel.pt', map_location=torch.device('cpu')))
     
     print('推論:def predict4')
     # 推論
