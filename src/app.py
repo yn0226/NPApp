@@ -116,9 +116,9 @@ def predict(pred_tensor):
     print('推論:def predict3')
     # 学習済みモデルの重み（NPmodel.pt）を読み込み
     # ★ローカルは以下のパス
-    #net.load_state_dict(torch.load('./src/NPmodel.pt', map_location=torch.device('cpu'))) #ここ！！パス？
+    net.load_state_dict(torch.load('./src/NPmodel.pt', map_location=torch.device('cpu'))) #ここ！！パス？
     # ★デプロイ時は以下のパス
-    net.load_state_dict(torch.load('../src/NPmodel.pt', map_location=torch.device('cpu')))
+    #net.load_state_dict(torch.load('../src/NPmodel.pt', map_location=torch.device('cpu')))
     
     print('推論:def predict4')
     # 推論
@@ -285,9 +285,16 @@ def predicts():
             df_Input['result'] = y3_value            
             #print(df_Input[:2])
 
+            # DataFrameのインデックスをリセットする際、元のインデックスを削除する
+            df_Input.reset_index(drop=True, inplace=True)
+
+            # .to_html()を呼び出す
+            html_table = df_Input.to_html(classes="mystyle")      
+
             # 判定結果を送る
             print('[4]総合判定：',all_NP_value,'P:',cnt_P_value,'N:',cnt_N_value,'Neu:',cnt_Neu_value)            
-            return render_template('result.html', Res_NP=all_NP_value, Res_P=cnt_P_value,Res_N=cnt_N_value,Res_Neu=cnt_Neu_value, table=(df_Input.to_html(classes="mystyle")))
+            #return render_template('result.html', Res_NP=all_NP_value, Res_P=cnt_P_value,Res_N=cnt_N_value,Res_Neu=cnt_Neu_value, table=(df_Input.to_html(classes="mystyle")))
+            return render_template('result.html', Res_NP=all_NP_value, Res_P=cnt_P_value, Res_N=cnt_N_value, Res_Neu=cnt_Neu_value, table=html_table)
         return redirect(request.url)
     
     # GET ---

@@ -308,7 +308,7 @@ def scrape_kakaku(url):
         
         #print(f'レビュー数:{len(reviews)}')
         
-        #ページ内の全てのレビューをループで取り出す
+        #ページ内の全てのレビューをループで取り出す        
         for review,eval in zip(reviews,evals):
             #レビューのタイトルを取得
             title = scr.get_text(review.find('div',class_='reviewTitle'))
@@ -324,7 +324,7 @@ def scrape_kakaku(url):
             tds = tables[1].find_all('td')
  
             columns = ['title','star','date','comment']
-            values = [title,star,date,comment] 
+            values = [title,star,date,comment]             
  
             for th,td in zip(ths,tds):
                 columns.append(th.text)
